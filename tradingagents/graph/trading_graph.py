@@ -35,7 +35,10 @@ from tradingagents.agents.utils.agent_utils import (
     get_income_statement,
     get_news,
     get_insider_transactions,
-    get_global_news
+    get_global_news,
+    get_reddit_sentiment,
+    get_stocktwits_sentiment,
+    get_web_search
 )
 
 from .checkpointer import checkpoint_step, clear_checkpoint, get_checkpointer, thread_id
@@ -81,6 +84,10 @@ class TradingAgentsGraph:
         # Add callbacks to kwargs if provided (passed to LLM constructor)
         if self.callbacks:
             llm_kwargs["callbacks"] = self.callbacks
+
+        # Add API key to kwargs if present in config
+        if self.config.get("api_key"):
+            llm_kwargs["api_key"] = self.config["api_key"]
 
         deep_client = create_llm_client(
             provider=self.config["llm_provider"],
@@ -164,8 +171,13 @@ class TradingAgentsGraph:
             ),
             "social": ToolNode(
                 [
-                    # News tools for social media analysis
+                    # News and social tools for social media analysis
                     get_news,
+                    get_global_news,
+                    get_insider_transactions,
+                    get_reddit_sentiment,
+                    get_stocktwits_sentiment,
+                    get_web_search,
                 ]
             ),
             "news": ToolNode(

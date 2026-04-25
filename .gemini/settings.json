@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "mempalace": {
+      "command": "/Users/jurgen/.pyenv/shims/mempalace",
+      "args": []
+    }
+  }
+}

@@ -16,7 +16,10 @@ from tradingagents.agents.utils.fundamental_data_tools import (
 from tradingagents.agents.utils.news_data_tools import (
     get_news,
     get_insider_transactions,
-    get_global_news
+    get_global_news,
+    get_reddit_sentiment,
+    get_stocktwits_sentiment,
+    get_web_search
 )
 
 
@@ -34,13 +37,13 @@ def get_language_instruction() -> str:
     return f" Write your entire response in {lang}."
 
 
-def build_instrument_context(ticker: str) -> str:
+def build_instrument_context(ticker: str, full_name: str = None) -> str:
     """Describe the exact instrument so agents preserve exchange-qualified tickers."""
-    return (
-        f"The instrument to analyze is `{ticker}`. "
-        "Use this exact ticker in every tool call, report, and recommendation, "
-        "preserving any exchange suffix (e.g. `.TO`, `.L`, `.HK`, `.T`)."
-    )
+    context = f"The instrument to analyze is `{ticker}`. "
+    if full_name and full_name != ticker:
+        context += f"Full company name: {full_name}. "
+    context += "Use this exact ticker in every tool call, report, and recommendation, preserving any exchange suffix (e.g. `.TO`, `.L`, `.HK`, `.T`)."
+    return context
 
 def create_msg_delete():
     def delete_messages(state):

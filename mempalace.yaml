@@ -1,0 +1,28 @@
+wing: tradingagents
+rooms:
+- name: tasks
+  description: Files from tasks/
+- name: web
+  description: Files from web/
+- name: testing
+  description: Files from tests/
+- name: documentation
+  description: Files from docs/
+- name: cli
+  description: Files from cli/
+- name: results
+  description: Files from results/
+- name: tradingagents
+  description: Files from tradingagents/
+- name: scripts
+  description: Files from scripts/
+- name: tradingagents.egg_info
+  description: Files from tradingagents.egg-info/
+- name: design
+  description: Files from assets/
+- name: frontend
+  description: Files from frontend/
+- name: backend
+  description: Files from backend/
+- name: general
+  description: Files that don't fit other rooms

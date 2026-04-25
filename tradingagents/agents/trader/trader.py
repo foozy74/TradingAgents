@@ -6,7 +6,7 @@ from tradingagents.agents.utils.agent_utils import build_instrument_context
 def create_trader(llm):
     def trader_node(state, name):
         company_name = state["company_of_interest"]
-        instrument_context = build_instrument_context(company_name)
+        instrument_context = build_instrument_context(company_name, state.get("company_full_name"))
         investment_plan = state["investment_plan"]
 
         context = {

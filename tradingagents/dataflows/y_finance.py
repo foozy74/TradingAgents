@@ -4,6 +4,7 @@ from dateutil.relativedelta import relativedelta
 import pandas as pd
 import yfinance as yf
 import os
+import pandas as pd
 from .stockstats_utils import StockstatsUtils, _clean_dataframe, yf_retry, load_ohlcv, filter_financials_by_date
 
 def get_YFin_data_online(
@@ -420,3 +421,49 @@ def get_insider_transactions(
         
     except Exception as e:
         return f"Error retrieving insider transactions for {ticker}: {str(e)}"
+
+def get_company_metadata(ticker: str) -> dict:
+    """
+    Get company metadata (full name, WKN, ISIN) from yfinance.
+    Note: yfinance doesn't always provide WKN/ISIN directly in .info,
+    but it's often in the long description or other fields.
+    """
+    try:
+        ticker_obj = yf.Ticker(ticker.upper())
+        info = yf_retry(lambda: ticker_obj.info)
+
+        if not info:
+            return {
+                "full_name": ticker.upper(),
+                "wkn": "Unknown",
+                "isin": "Unknown"
+            }
+
+        # Extract full name
+        full_name = info.get("longName") or info.get("shortName") or ticker.upper()
+
+        # ISIN is sometimes available directly on the ticker object in newer yfinance
+        isin = "Unknown"
+        try:
+            isin = ticker_obj.isin
+            if isin == '-' or not isin:
+                isin = "Unknown"
+        except:
+            pass
+
+        # WKN is harder via yfinance as it's German-specific. 
+        # For US stocks it's rarely there. 
+        wkn = "Unknown"
+
+        return {
+            "full_name": full_name,
+            "wkn": wkn,
+            "isin": isin
+        }
+    except Exception as e:
+        print(f"Error fetching metadata for {ticker}: {e}")
+        return {
+            "full_name": ticker.upper(),
+            "wkn": "Unknown",
+            "isin": "Unknown"
+        }

@@ -11,6 +11,7 @@ from .y_finance import (
     get_insider_transactions as get_yfinance_insider_transactions,
 )
 from .yfinance_news import get_news_yfinance, get_global_news_yfinance
+from .firecrawl_tools import scrape_reddit_sentiment, scrape_stocktwits_sentiment, firecrawl_web_search
 from .alpha_vantage import (
     get_stock as get_alpha_vantage_stock,
     get_indicator as get_alpha_vantage_indicator,
@@ -56,6 +57,9 @@ TOOLS_CATEGORIES = {
             "get_news",
             "get_global_news",
             "get_insider_transactions",
+            "get_reddit_sentiment",
+            "get_stocktwits_sentiment",
+            "get_web_search",
         ]
     }
 }
@@ -63,6 +67,7 @@ TOOLS_CATEGORIES = {
 VENDOR_LIST = [
     "yfinance",
     "alpha_vantage",
+    "firecrawl",
 ]
 
 # Mapping of methods to their vendor-specific implementations
@@ -106,6 +111,15 @@ VENDOR_METHODS = {
     "get_insider_transactions": {
         "alpha_vantage": get_alpha_vantage_insider_transactions,
         "yfinance": get_yfinance_insider_transactions,
+    },
+    "get_reddit_sentiment": {
+        "firecrawl": scrape_reddit_sentiment,
+    },
+    "get_stocktwits_sentiment": {
+        "firecrawl": scrape_stocktwits_sentiment,
+    },
+    "get_web_search": {
+        "firecrawl": firecrawl_web_search,
     },
 }
 

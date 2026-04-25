@@ -4,7 +4,7 @@ from tradingagents.agents.utils.agent_utils import build_instrument_context, get
 def create_portfolio_manager(llm):
     def portfolio_manager_node(state) -> dict:
 
-        instrument_context = build_instrument_context(state["company_of_interest"])
+        instrument_context = build_instrument_context(state["company_of_interest"], state.get("company_full_name"))
 
         history = state["risk_debate_state"]["history"]
         risk_debate_state = state["risk_debate_state"]

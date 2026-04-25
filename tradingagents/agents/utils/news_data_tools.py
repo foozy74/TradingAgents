@@ -21,6 +21,32 @@ def get_news(
     return route_to_vendor("get_news", ticker, start_date, end_date)
 
 @tool
+def get_reddit_sentiment(
+    ticker: Annotated[str, "Ticker symbol"],
+) -> str:
+    """
+    Retrieve sentiment from Reddit for a given ticker symbol.
+    Args:
+        ticker (str): Ticker symbol
+    Returns:
+        str: A report of Reddit sentiment data
+    """
+    return route_to_vendor("get_reddit_sentiment", ticker)
+
+@tool
+def get_stocktwits_sentiment(
+    ticker: Annotated[str, "Ticker symbol"],
+) -> str:
+    """
+    Retrieve sentiment from StockTwits for a given ticker symbol.
+    Args:
+        ticker (str): Ticker symbol
+    Returns:
+        str: A report of StockTwits sentiment data
+    """
+    return route_to_vendor("get_stocktwits_sentiment", ticker)
+
+@tool
 def get_global_news(
     curr_date: Annotated[str, "Current date in yyyy-mm-dd format"],
     look_back_days: Annotated[int, "Number of days to look back"] = 7,
@@ -51,3 +77,19 @@ def get_insider_transactions(
         str: A report of insider transaction data
     """
     return route_to_vendor("get_insider_transactions", ticker)
+
+@tool
+def get_web_search(
+    query: Annotated[str, "Search query for the web"],
+    limit: Annotated[int, "Maximum number of search results to return"] = 5,
+) -> str:
+    """
+    Perform a general web search to find relevant information or sentiment about a company/stock.
+    Uses the configured news_data vendor (usually Firecrawl).
+    Args:
+        query (str): The search query
+        limit (int): Maximum number of results to return (default 5)
+    Returns:
+        str: A formatted string containing search results
+    """
+    return route_to_vendor("get_web_search", query, limit)

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 services:
   tradingagents:
     build: .
@@ -33,3 +34,34 @@ services:
 volumes:
   tradingagents_data:
   ollama_data:
+=======
+version: '3.8'
+
+services:
+  tradingagents:
+    build:
+      context: .
+      dockerfile: Dockerfile_web
+    image: tradingagents:latest
+    container_name: tradingagents
+    restart: always
+    ports:
+      - "${PORT:-8000}:8000"
+    environment:
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY}
+      - PYTHONUNBUFFERED=1
+      - TRADINGAGENTS_RESULTS_DIR=/app/results
+    volumes:
+      - tradingagents_results:/app/results
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  tradingagents_results:
+    driver: local
+>>>>>>> df5dd29 (chore: update web frontend and skills)

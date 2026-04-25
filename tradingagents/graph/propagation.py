@@ -6,6 +6,7 @@ from tradingagents.agents.utils.agent_states import (
     InvestDebateState,
     RiskDebateState,
 )
+from tradingagents.dataflows.y_finance import get_company_metadata
 
 
 class Propagator:
@@ -19,9 +20,14 @@ class Propagator:
         self, company_name: str, trade_date: str, past_context: str = ""
     ) -> Dict[str, Any]:
         """Create the initial state for the agent graph."""
+        metadata = get_company_metadata(company_name)
+        
         return {
             "messages": [("human", company_name)],
             "company_of_interest": company_name,
+            "company_full_name": metadata["full_name"],
+            "wkn": metadata["wkn"],
+            "isin": metadata["isin"],
             "trade_date": str(trade_date),
             "past_context": past_context,
             "investment_debate_state": InvestDebateState(

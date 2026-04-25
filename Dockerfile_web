@@ -1,0 +1,43 @@
+# Stage 1: Build Frontend
+FROM node:20-slim AS frontend-builder
+WORKDIR /app/frontend
+# Use current package.json which now has all dependencies
+COPY web/frontend/package*.json ./
+RUN npm install
+COPY web/frontend/ ./
+RUN npm run build
+
+# Stage 2: Backend & Final Image
+FROM python:3.13-slim
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy entire repository for the library installation
+COPY . /app/source
+WORKDIR /app/source
+RUN pip install .
+
+# Setup web runtime
+WORKDIR /app/web
+COPY web/backend/requirements.txt ./
+RUN pip install -r requirements.txt
+
+# Copy backend code and the frontend assets
+COPY web/backend/ ./
+COPY --from=frontend-builder /app/frontend/dist ./dist
+
+# Environment variables
+ENV PYTHONUNBUFFERED=1
+ENV TRADINGAGENTS_RESULTS_DIR=/app/results
+RUN mkdir -p /app/results
+
+EXPOSE 8000
+
+# Start command
+# We use uvicorn to run the app in /app/web
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
