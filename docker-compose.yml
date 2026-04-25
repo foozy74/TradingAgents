@@ -1,67 +1,25 @@
-<<<<<<< HEAD
-services:
-  tradingagents:
-    build: .
-    env_file:
-      - .env
-    volumes:
-      - tradingagents_data:/home/appuser/.tradingagents
-    tty: true
-    stdin_open: true
-
-  ollama:
-    image: ollama/ollama:latest
-    volumes:
-      - ollama_data:/root/.ollama
-    profiles:
-      - ollama
-
-  tradingagents-ollama:
-    build: .
-    env_file:
-      - .env
-    environment:
-      - LLM_PROVIDER=ollama
-    volumes:
-      - tradingagents_data:/home/appuser/.tradingagents
-    depends_on:
-      - ollama
-    tty: true
-    stdin_open: true
-    profiles:
-      - ollama
-
-volumes:
-  tradingagents_data:
-  ollama_data:
-=======
-version: '3.8'
-
 services:
   tradingagents:
     build:
       context: .
       dockerfile: Dockerfile_web
-    image: tradingagents:latest
-    container_name: tradingagents
     restart: always
     ports:
-      - "${PORT:-8000}:8000"
+      - "8002:8000"
     environment:
       - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
       - FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY}
       - PYTHONUNBUFFERED=1
       - TRADINGAGENTS_RESULTS_DIR=/app/results
     volumes:
-      - tradingagents_results:/app/results
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+      - tradingagents-results:/app/results
+    networks:
+      - tradehub-network
 
 volumes:
-  tradingagents_results:
-    driver: local
->>>>>>> df5dd29 (chore: update web frontend and skills)
+  tradingagents-results:
+
+networks:
+  tradehub-network:
+    external: true
+    name: tradehub-shared
