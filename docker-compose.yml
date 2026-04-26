@@ -15,7 +15,7 @@ services:
       - tradehub-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tradingagents-router.rule=Host(`agents.thesolution.at`)"
+      - "traefik.http.routers.tradingagents-router.rule=Host(`agent.thesolution.at`)"
       - "traefik.http.routers.tradingagents-router.tls=true"
       - "traefik.http.services.tradingagents-router.loadbalancer.server.port=8000"
 
