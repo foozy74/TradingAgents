@@ -4,8 +4,6 @@ services:
       context: .
       dockerfile: Dockerfile_web
     restart: always
-    ports:
-      - "8002:8000"
     environment:
       - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
       - FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY}
@@ -15,6 +13,14 @@ services:
       - tradingagents-results:/app/results
     networks:
       - tradehub-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tradingagents.rule=Host(`agents.thesolution.at`)"
+      - "traefik.http.routers.tradingagents.entrypoints=websecure"
+      - "traefik.http.routers.tradingagents.tls=true"
+      - "traefik.http.routers.tradingagents.middlewares=agents-auth"
+      - "traefik.http.middlewares.agents-auth.basicauth.users=owner:$apr1$y.Usukd9$mCpYYvB1OBHCfULMnn0/f."
+      - "traefik.http.services.tradingagents.loadbalancer.server.port=8000"
 
 volumes:
   tradingagents-results:
@@ -22,4 +28,3 @@ volumes:
 networks:
   tradehub-network:
     external: true
-    name: tradehub-network
