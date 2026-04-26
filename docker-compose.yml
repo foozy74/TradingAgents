@@ -16,7 +16,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.tradingagents-router.rule=Host(`agents.thesolution.at`)"
-      - "traefik.http.routers.tradingagents-router.entrypoints=websecure"
       - "traefik.http.routers.tradingagents-router.tls=true"
       - "traefik.http.routers.tradingagents-router.middlewares=agents-trading-auth"
       - "traefik.http.middlewares.agents-trading-auth.basicauth.users=owner:$$apr1$$y.Usukd9$$mCpYYvB1OBHCfULMnn0/f."
