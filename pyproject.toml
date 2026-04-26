@@ -31,6 +31,7 @@ dependencies = [
     "typing-extensions>=4.14.0",
     "yfinance>=0.2.63",
     "firecrawl-py>=1.0.0",
+    "rank-bm25>=0.2.2",
 ]
 
 [project.scripts]
