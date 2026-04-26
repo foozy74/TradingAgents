@@ -3,7 +3,7 @@ import json
 import re
 import random
 from pathlib import Path
-from typing import List, Tuple, Optional, dict
+from typing import List, Tuple, Optional, Dict
 from rank_bm25 import BM25Okapi
 
 class TradingMemoryLog:
