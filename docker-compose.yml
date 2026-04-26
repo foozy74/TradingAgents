@@ -15,12 +15,12 @@ services:
       - tradehub-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tradingagents.rule=Host(`agents.thesolution.at`)"
-      - "traefik.http.routers.tradingagents.entrypoints=websecure"
-      - "traefik.http.routers.tradingagents.tls=true"
-      - "traefik.http.routers.tradingagents.middlewares=agents-auth"
-      - "traefik.http.middlewares.agents-auth.basicauth.users=owner:$apr1$y.Usukd9$mCpYYvB1OBHCfULMnn0/f."
-      - "traefik.http.services.tradingagents.loadbalancer.server.port=8000"
+      - "traefik.http.routers.tradingagents-router.rule=Host(`agents.thesolution.at`)"
+      - "traefik.http.routers.tradingagents-router.entrypoints=websecure"
+      - "traefik.http.routers.tradingagents-router.tls=true"
+      - "traefik.http.routers.tradingagents-router.middlewares=agents-trading-auth"
+      - "traefik.http.middlewares.agents-trading-auth.basicauth.users=owner:$$apr1$$y.Usukd9$$mCpYYvB1OBHCfULMnn0/f."
+      - "traefik.http.services.tradingagents-router.loadbalancer.server.port=8000"
 
 volumes:
   tradingagents-results:
