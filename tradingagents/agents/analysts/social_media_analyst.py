@@ -1,7 +1,4 @@
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-<<<<<<< HEAD
-from tradingagents.agents.utils.agent_utils import build_instrument_context, get_language_instruction, get_news
-=======
 import time
 import json
 from tradingagents.agents.utils.agent_utils import (
@@ -14,7 +11,6 @@ from tradingagents.agents.utils.agent_utils import (
     get_insider_transactions,
     get_web_search
 )
->>>>>>> df5dd29 (chore: update web frontend and skills)
 from tradingagents.dataflows.config import get_config
 
 
